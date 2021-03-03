@@ -1,0 +1,41 @@
+--vycistime tabulku
+truncate table service;
+
+
+--Pridame 5 pouziti sluzby do tabulky
+begin
+        pridej_sluzbu.add_service(1, 1, date '2020-01-01', date '2020-01-01', 1);
+        pridej_sluzbu.add_service(1, 1, date '2020-01-01', date '2020-01-01', 1);
+        pridej_sluzbu.add_service(1, 1, date '2020-01-01', date '2020-01-01', 1);
+        pridej_sluzbu.add_service(1, 1, date '2020-01-01', date '2020-01-01', 1);
+        pridej_sluzbu.add_service(1, 1, date '2020-01-01', date '2020-01-01', 1);
+end;
+/
+
+Statement processed.
+Sluzba byla pridana
+Sluzba byla pridana
+Sluzba byla pridana
+Sluzba byla pridana
+Sluzba byla pridana
+
+
+--Po sestem volani procedura musi vyhodit vyjimku, jelikoz jeden student muze vyuzit sluzeb maximalne petkrat
+begin
+        pridej_sluzbu.add_service(1, 1, date '2020-01-01', date '2020-01-01', 1);
+end;
+/
+
+ORA-20001: Can not use service with service_type_key 1 more than 5 times ORA-06512: at "SQL_RHTHYFRNFBSSBGAKNLOVRQOQU.PRIDEJ_SLUZBU", line 21
+ORA-06512: at line 2
+ORA-06512: at "SYS.DBMS_SQL", line 1721
+
+--Ted zmenime identifikator typu sluzby, abychom vyvolali druhou vyjimku
+begin
+        pridej_sluzbu.add_service(1, 1, date '2020-01-01', date '2020-01-01', 2);
+end;
+/
+
+ORA-20002: Student with student_key 1 can not use services more than 5 times ORA-06512: at "SQL_RHTHYFRNFBSSBGAKNLOVRQOQU.PRIDEJ_SLUZBU", line 24
+ORA-06512: at line 2
+ORA-06512: at "SYS.DBMS_SQL", line 1721
